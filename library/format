@@ -1,4 +1,4 @@
-#method {
+#function {
 
     format {
 
@@ -14,7 +14,7 @@
             #set            [ #data iterator ] [ #last ]
             #serialize      [ #last:selector ]
             #set            [ #data selector ] [ #last ]
-            #call           [ #method:format:serialize ] [ #scope:iterator:instance ] [ #scope:inner_prefix ]
+            #call           [ #function:format:serialize ] [ #scope:iterator:instance ] [ #scope:inner_prefix ]
             #string         [ #scope:string ] [ #scope:inner_prefix ] [ #scope:selector ] [ #data " " ] [ #last ] [ #data "\n" ]
             #modify         [ #data #scope:string ] [ #last ]
             #end            [ #data #always ]
@@ -32,7 +32,7 @@
             #set            [ #data inner_prefix ] [ #last ]
             #set            [ #data string ] [ #data "[\n" ]
             #iterate        [ #scope:data ]
-            #call           [ #method:format:serialize ] [ #last:instance ] [ #scope:inner_prefix ]
+            #call           [ #function:format:serialize ] [ #last:instance ] [ #scope:inner_prefix ]
             #string         [ #scope:string ] [ #scope:inner_prefix ] [ #last ] [ #data "\n" ]
             #modify         [ #data #scope:string ] [ #last ]
             #end            [ #data #always ]
@@ -43,10 +43,10 @@
 
         serialize [ [ #single data ] [ #single prefix [ string ] ]
             #if             [ #data #map ] [ #scope:data ]
-            #call           [ #method:format:serialize_map ] [ #scope:data ] [ #scope:prefix ]
+            #call           [ #function:format:serialize_map ] [ #scope:data ] [ #scope:prefix ]
             #return         [ #last ]
             #else           [ #data #list ] [ #scope:data ]
-            #call           [ #method:format:serialize_list ] [ #scope:data ] [ #scope:prefix ]
+            #call           [ #function:format:serialize_list ] [ #scope:data ] [ #scope:prefix ]
             #return         [ #last ]
             #else           [ #data #always ]
             #serialize      [ #scope:data ]

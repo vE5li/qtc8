@@ -1,4 +1,4 @@
-#method {
+#function {
 
     read_touch_map [ [ #single path [ string ] ]
         #system         [ #data "touch" ] [ #scope:path ]
