@@ -67,14 +67,14 @@
             #return         [ #last ]
         ]
 
-        list [ [ #single list [ list ] ] [ #single seperator ]
+        list [ [ #single list [ list ] ] [ #single seperator ] [ #single color ]
             #iterate        [ #scope:list ]
             #set            [ #data iterator ] [ #last ]
-            #string         [ #root:color:green ] [ #scope:iterator:instance ] [ #root:color:none ]
+            #string         [ #scope:color ] [ #scope:iterator:instance ] [ #root:color:none ]
             #overwrite      [ #scope:list ] [ #scope:iterator:selector ] [ #last ]
             #set            [ #data list ] [ #last ]
             #end            [ #data #always ]
-            #join           [ #scope:list ] [ #data ", " ]
+            #join           [ #scope:list ] [ #scope:seperator ]
             #return         [ #last ]
         ]
 

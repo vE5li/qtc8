@@ -74,13 +74,13 @@
     ]
 
     #expected [ [ #single expected [ list ] ]
-        #call           [ #function:format:list ] [ #scope expected ] [ #data ", " ]
+        #call           [ #function:format:list ] [ #scope expected ] [ #data ", " ] [ #root:color:green ]
         #string         [ #data "expected " ] [ #last ]
         #return         [ #last ]
     ]
 
     #expected_found [ [ #single expected [ list ] ] [ #single found ]
-        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ]
+        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ] [ #root:color:green ]
         #set            [ #data list ] [ #last ]
         #call           [ #function:format:debug ] [ #scope:found ]
         #string         [ #data "expected " ] [ #scope:list ] [ #data " -> found " ] [ #last ]
@@ -88,13 +88,13 @@
     ]
 
     #expected_parameter [ [ #single index ] [ #single expected ]
-        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ]
+        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ] [ #root:color:green ]
         #string         [ #data "parameter " ] [ #scope:index ] [ #data " expected " ] [ #last ]
         #return         [ #last ]
     ]
 
     #expected_parameter_found [ [ #single index [ integer ] ] [ #single expected [ list ] ] [ #single found ]
-        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ]
+        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ] [ #root:color:green ]
         #set            [ #data list ] [ #last ]
         #call           [ #function:format:debug ] [ #scope:found ]
         #string         [ #data "parameter " ] [ #scope:index ] [ #data " expected " ] [ #scope:list ] [ #data " -> found " ] [ #last ]
