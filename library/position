@@ -5,7 +5,7 @@
         split [ [ #single positions ]
 
             @
-            #set            [ #data lookup ] [ #data {} ]
+            #set            [ #data lookup ] [ #data { } ]
             #iterate        [ #scope:positions ]
             #set            [ #data iterator ] [ #last:instance ]
             #if             [ #data #equals ] [ #scope:iterator:file ] [ #data none ]
