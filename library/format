@@ -12,7 +12,7 @@
             #set            [ #data string ] [ #data "{\n" ]
             #iterate        [ #scope:data ]
             #set            [ #data iterator ] [ #last ]
-            #serialize      [ #last:selector ]
+            #serialize      [ #scope:iterator:selector ]
             #set            [ #data selector ] [ #last ]
             #call           [ #function:format:serialize ] [ #scope:iterator:instance ] [ #scope:inner_prefix ]
             #string         [ #scope:string ] [ #scope:inner_prefix ] [ #scope:selector ] [ #data " " ] [ #last ] [ #data "\n" ]
