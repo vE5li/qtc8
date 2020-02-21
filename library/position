@@ -18,7 +18,7 @@
             #set            [ #data path ] [ #last ]
             #resolve        [ #scope:path ]
             @ only if #not_contains !!!!!!!
-            #insert         [ #last ] [ #data -1 ] [ #scope:iterator ]
+            #append         [ #last ] [ #scope:iterator ]
             #modify         [ #scope:path ] [ #last ]
             #else           [ #data #always ]
             #set            [ #data key ] [ #last ]
