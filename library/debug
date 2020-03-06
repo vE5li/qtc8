@@ -13,43 +13,43 @@
     ]
 
     @ move this to print module
-    print {
+    #print {
 
         color [ [ #single color ] [ #single sender ] [ #list message ]
-            #call           [ #function:format:tag ] [ #scope:color ] [ #scope:sender ]
+            #call           [ #function:#format:tag ] [ #scope:color ] [ #scope:sender ]
             #list           [ #last ] [ #data " " ]
             #merge          [ #last ] [ #scope:message ]
             #invoke         [ #data #print_line ] [ #last ]
         ]
 
         debug [ [ #list message ]
-            #list           [ #root:color:magenta ] [ #data "debug" ]
+            #list           [ #root:#color:magenta ] [ #data "debug" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:print:color ] [ #last ]
+            #call_list      [ #function:#print:color ] [ #last ]
         ]
 
         error [ [ #list message ]
-            #list           [ #root:color:red ] [ #data "error" ]
+            #list           [ #root:#color:red ] [ #data "error" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:print:color ] [ #last ]
+            #call_list      [ #function:#print:color ] [ #last ]
         ]
 
         warning [ [ #list message ]
-            #list           [ #root:color:yellow ] [ #data "warning" ]
+            #list           [ #root:#color:yellow ] [ #data "warning" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:print:color ] [ #last ]
+            #call_list      [ #function:#print:color ] [ #last ]
         ]
 
         success [ [ #list message ]
-            #list           [ #root:color:green ] [ #data "success" ]
+            #list           [ #root:#color:green ] [ #data "success" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:print:color ] [ #last ]
+            #call_list      [ #function:#print:color ] [ #last ]
         ]
 
         module [ [ #list message ]
-            #list           [ #root:color:cyan ] [ #data "module" ]
+            #list           [ #root:#color:cyan ] [ #data "module" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:print:color ] [ #last ]
+            #call_list      [ #function:#print:color ] [ #last ]
         ]
     }
 
@@ -58,7 +58,7 @@
         @ instruction tag
         #if             [ #data #keyword ] [ #scope:tag ]
         #serialize      [ #scope:tag ]
-        #call           [ #function:format:tag ] [ #root:color:red ] [ #last ]
+        #call           [ #function:#format:tag ] [ #root:#color:red ] [ #last ]
         #string         [ #last ] [ #data " " ] [ #scope:message ]
         #return         [ #last ]
 
@@ -68,35 +68,35 @@
     ]
 
     #message [ [ #single message [ string ] ]
-        #call           [ #function:format:tag ] [ #root:color:red ] [ #data "error" ]
+        #call           [ #function:#format:tag ] [ #root:#color:red ] [ #data "error" ]
         #string         [ #last ] [ #data " " ] [ #scope:message ]
         #return         [ #last ]
     ]
 
     #expected [ [ #single expected [ list ] ]
-        #call           [ #function:format:list ] [ #scope expected ] [ #data ", " ] [ #root:color:green ]
+        #call           [ #function:#format:list ] [ #scope expected ] [ #data ", " ] [ #root:#color:green ]
         #string         [ #data "expected " ] [ #last ]
         #return         [ #last ]
     ]
 
     #expected_found [ [ #single expected [ list ] ] [ #single found ]
-        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ] [ #root:color:green ]
+        #call           [ #function:#format:list ] [ #scope:expected ] [ #data ", " ] [ #root:#color:green ]
         #set            [ #data list ] [ #last ]
-        #call           [ #function:format:debug ] [ #scope:found ]
+        #call           [ #function:#format:debug ] [ #scope:found ]
         #string         [ #data "expected " ] [ #scope:list ] [ #data " -> found " ] [ #last ]
         #return         [ #last ]
     ]
 
     #expected_parameter [ [ #single index ] [ #single expected ]
-        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ] [ #root:color:green ]
+        #call           [ #function:#format:list ] [ #scope:expected ] [ #data ", " ] [ #root:#color:green ]
         #string         [ #data "parameter " ] [ #scope:index ] [ #data " expected " ] [ #last ]
         #return         [ #last ]
     ]
 
     #expected_parameter_found [ [ #single index [ integer ] ] [ #single expected [ list ] ] [ #single found ]
-        #call           [ #function:format:list ] [ #scope:expected ] [ #data ", " ] [ #root:color:green ]
+        #call           [ #function:#format:list ] [ #scope:expected ] [ #data ", " ] [ #root:#color:green ]
         #set            [ #data list ] [ #last ]
-        #call           [ #function:format:debug ] [ #scope:found ]
+        #call           [ #function:#format:debug ] [ #scope:found ]
         #string         [ #data "parameter " ] [ #scope:index ] [ #data " expected " ] [ #scope:list ] [ #data " -> found " ] [ #last ]
         #return         [ #last ]
     ]

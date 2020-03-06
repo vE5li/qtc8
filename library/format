@@ -1,6 +1,6 @@
 #function {
 
-    format {
+    #format {
 
         serialize_map [ [ #single data ] [ #single prefix [ string ] ]
             #length         [ #scope:data ]
@@ -14,7 +14,7 @@
             #set            [ #data iterator ] [ #last ]
             #serialize      [ #scope:iterator:selector ]
             #set            [ #data selector ] [ #last ]
-            #call           [ #function:format:serialize_prefix ] [ #scope:iterator:instance ] [ #scope:inner_prefix ]
+            #call           [ #function:#format:serialize_prefix ] [ #scope:iterator:instance ] [ #scope:inner_prefix ]
             #string         [ #scope:string ] [ #scope:inner_prefix ] [ #scope:selector ] [ #data " " ] [ #last ] [ #data "\n" ]
             #modify         [ #data #scope:string ] [ #last ]
             #end            [ #data #always ]
@@ -32,7 +32,7 @@
             #set            [ #data inner_prefix ] [ #last ]
             #set            [ #data string ] [ #data "[\n" ]
             #iterate        [ #scope:data ]
-            #call           [ #function:format:serialize_prefix ] [ #last:instance ] [ #scope:inner_prefix ]
+            #call           [ #function:#format:serialize_prefix ] [ #last:instance ] [ #scope:inner_prefix ]
             #string         [ #scope:string ] [ #scope:inner_prefix ] [ #last ] [ #data "\n" ]
             #modify         [ #data #scope:string ] [ #last ]
             #end            [ #data #always ]
@@ -43,10 +43,10 @@
 
         serialize_prefix [ [ #single data ] [ #single prefix [ string ] ]
             #if             [ #data #map ] [ #scope:data ]
-            #call           [ #function:format:serialize_map ] [ #scope:data ] [ #scope:prefix ]
+            #call           [ #function:#format:serialize_map ] [ #scope:data ] [ #scope:prefix ]
             #return         [ #last ]
             #else           [ #data #list ] [ #scope:data ]
-            #call           [ #function:format:serialize_list ] [ #scope:data ] [ #scope:prefix ]
+            #call           [ #function:#format:serialize_list ] [ #scope:data ] [ #scope:prefix ]
             #return         [ #last ]
             #else           [ #data #always ]
             #serialize      [ #scope:data ]
@@ -55,12 +55,12 @@
         ]
 
         serialize [ [ #single data ]
-            #call           [ #function:format:serialize_prefix ] [ #scope:data ] [ #data "" ]
+            #call           [ #function:#format:serialize_prefix ] [ #scope:data ] [ #data "" ]
             #return         [ #last ]
         ]
 
         tag [ [ #single color ] [ #single content ]
-            #string         [ #data "[ " ] [ #scope:color ] [ #scope:content ] [ #root:color:none ] [ #data " ]" ]
+            #string         [ #data "[ " ] [ #scope:color ] [ #scope:content ] [ #root:#color:none ] [ #data " ]" ]
             #return         [ #last ]
         ]
 
@@ -68,14 +68,14 @@
             #type           [ #scope:instance ]
             #set            [ #data type ] [ #last ]
             #serialize      [ #scope:instance ]
-            #string         [ #root:color:cyan ] [ #scope:type ] [ #data " " ] [ #last ] [ #root:color:none ]
+            #string         [ #root:#color:cyan ] [ #scope:type ] [ #data " " ] [ #last ] [ #root:#color:none ]
             #return         [ #last ]
         ]
 
         list [ [ #single list [ list ] ] [ #single seperator ] [ #single color ]
             #iterate        [ #scope:list ]
             #set            [ #data iterator ] [ #last ]
-            #string         [ #scope:color ] [ #scope:iterator:instance ] [ #root:color:none ]
+            #string         [ #scope:color ] [ #scope:iterator:instance ] [ #root:#color:none ]
             #overwrite      [ #scope:list ] [ #scope:iterator:selector ] [ #last ]
             #set            [ #data list ] [ #last ]
             #end            [ #data #always ]

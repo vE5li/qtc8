@@ -1,6 +1,6 @@
 #function {
 
-    position {
+    #position {
 
         split [ [ #single positions ]
 
@@ -77,7 +77,7 @@
         print [ [ #single color ] [ #single positions ]
 
             @ split the positions into their respective files and iterate those
-            #call           [ #function:position:split ] [ #scope:positions ]
+            #call           [ #function:#position:split ] [ #scope:positions ]
             #iterate        [ #last ]
             #set            [ #data iterator ] [ #last:instance ]
 
@@ -85,7 +85,7 @@
             #if             [ #data #equals ] [ #scope:iterator:1:file ] [ #data none ]
             #print_line     [ #data "in string:"]
             #else
-            #print_line     [ #data "in file " ] [ #root:color:cyan ] [ #scope:iterator:1:file ] [ #root:color:none ] [ #data ":"]
+            #print_line     [ #data "in file " ] [ #root:#color:cyan ] [ #scope:iterator:1:file ] [ #root:#color:none ] [ #data ":"]
             #end
 
             @ split the file into lines and iterate them
@@ -94,26 +94,26 @@
             #set            [ #data line ] [ #last ]
 
             @ check if line is supposed to be printed
-            #call           [ #function:position:line_matches ] [ #scope:iterator ] [ #scope:line:selector ]
+            #call           [ #function:#position:line_matches ] [ #scope:iterator ] [ #scope:line:selector ]
             #if             [ #data #integer ] [ #last ]
             #set            [ #data difference ] [ #last ]
 
             @ print the line
             #fill           [ #scope:line:selector ] [ #data ' ' ] [ #data 4 ]
-            #print_line     [ #data "[ " ] [ #root:color:cyan ] [ #last ] [ #root:color:none ] [ #data " ] " ] [ #scope:line:instance ]
+            #print_line     [ #data "[ " ] [ #root:#color:cyan ] [ #last ] [ #root:#color:none ] [ #data " ] " ] [ #scope:line:instance ]
 
             @ underline
             #if             [ #data #zero ] [ #scope:difference ]
             #print          [ #data "[    + ] " ] [ #scope:color ]
             #iterate        [ #scope:line:instance ]
-            #call           [ #function:position:offset_matches ] [ #scope:iterator ] [ #scope:line:selector ] [ #last:selector ]
+            #call           [ #function:#position:offset_matches ] [ #scope:iterator ] [ #scope:line:selector ] [ #last:selector ]
             #if             [ #data #true ] [ #last ]
             #print          [ #data '^' ]
             #else
             #print          [ #data ' ' ]
             #end
             #end
-            #print_line     [ #root:color:none ]
+            #print_line     [ #root:#color:none ]
             #end
             #end
             #end
