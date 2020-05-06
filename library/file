@@ -2,53 +2,90 @@
 
     #file {
 
-        read_touch_map [ [ #single path [ string ] ]
-            #system         [ #data "touch" ] [ #scope:path ]
-            #read_map       [ #scope:path ]
+        file_information [ [ #single path ]
+
+            @ if path is only the filename
+            #if             [ #data #not_contains ] [ #scope:path ] [ #data '/' ]
+            #map            [ #data directory ] [ #data "" ] [ #data filename ] [ #scope:path ]
             #return         [ #last ]
+
+            @ if the path contains a directory
+            #else
+            #position       [ #scope:path ] [ #data '/' ]
+            #set            [ #data seperator ] [ #last:-1 ]
+
+            @ get the filename
+            #add            [ #scope:seperator ] [ #data 1 ]
+            #slice          [ #scope:path ] [ #last ] [ #data -1 ]
+            #set            [ #data filename ] [ #last ]
+
+            @ get the directory
+            #slice          [ #scope:path ] [ #data 1 ] [ #scope:seperator ]
+            #set            [ #data directory ] [ #last ]
+
+            @ return the file information
+            #map            [ #data directory ] [ #scope:directory ] [ #data filename ] [ #scope:filename ]
+            #return         [ #last ]
+            #end
         ]
 
-        read_touch_file [ [ #single path [ string ] ]
-            #system         [ #data "touch" ] [ #scope:path ]
-            #read_map       [ #scope:path ]
-            #return         [ #last ]
-        ]
+        read_create_map [ [ #single path [ string ] ]
 
-        read_create_map [ [ #single directory [ string ] ] [ #single filename [ string ] ]
+            @ get file information
+            #call           [ #function:#file:file_information ] [ #scope:path ]
+            #set            [ #data information ] [ #last ]
+
+            @ create the directory and file if needed
             #string         [ #data "mkdir -p " ] [ #scope:directory ]
             #system         [ #data "bash" ] [ #data "-c" ] [ #last ]
-            #string         [ #scope:directory ] [ #scope:filename ]
-            #insert         [ #scope ] [ #data path ] [ #last ]
-            #modify         [ #data #scope ] [ #last ]
             #string         [ #data "touch " ] [ #scope:path ]
             #system         [ #data "bash" ] [ #data "-c" ] [ #last ]
+
+            @ read the contents of the file and return them
             #read_map       [ #scope:path ]
             #return         [ #last ]
         ]
 
         read_create [ [ #single directory [ string ] ] [ #single filename [ string ] ]
+
+            @ get file information
+            #call           [ #function:#file:file_information ] [ #scope:path ]
+            #set            [ #data information ] [ #last ]
+
+            @ create the directory and file if needed
             #string         [ #data "mkdir -p " ] [ #scope:directory ]
             #system         [ #data "bash" ] [ #data "-c" ] [ #last ]
-            #string         [ #scope:directory ] [ #scope:filename ]
-            #insert         [ #scope ] [ #data path ] [ #last ]
-            #modify         [ #data #scope ] [ #last ]
             #string         [ #data "touch " ] [ #scope:path ]
             #system         [ #data "bash" ] [ #data "-c" ] [ #last ]
+
+            @ read the contents of the file and return them
             #read_file      [ #scope:path ]
             #return         [ #last ]
         ]
 
-        write_create_map [ [ #single directory [ string ] ] [ #single filename [ string ] ] [ #single map ]
+        write_create_map [ [ #single path [ string ] ] [ #single map [ map ] ]
+
+            @ get file information
+            #call           [ #function:#file:file_information ] [ #scope:path ]
+            #set            [ #data information ] [ #last ]
+
+            @ create the directory and write to the file
             #string         [ #data "mkdir -p " ] [ #scope:directory ]
             #system         [ #data "bash" ] [ #data "-c" ] [ #last ]
             #string         [ #scope:directory ] [ #scope:filename ]
             #write_map      [ #last ] [ #scope:map ]
         ]
 
-        write_create [ [ #single directory [ string ] ] [ #single filename [ string ] ] [ #single content ]
-            #string         [ #data "mkdir -p " ] [ #scope:directory ]
+        write_create [ [ #single path [ string ] ] [ #single content ]
+
+            @ get file information
+            #call           [ #function:#file:file_information ] [ #scope:path ]
+            #set            [ #data information ] [ #last ]
+
+            @ create the directory and write to the file
+            #string         [ #data "mkdir -p " ] [ #scope:information:directory ]
             #system         [ #data "bash" ] [ #data "-c" ] [ #last ]
-            #string         [ #scope:directory ] [ #scope:filename ]
+            #string         [ #scope:information:directory ] [ #scope:information:filename ]
             #write_file     [ #last ] [ #scope:content ]
         ]
     }
