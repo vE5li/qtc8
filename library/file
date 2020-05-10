@@ -12,16 +12,16 @@
             @ if the path contains a directory
             #else
             #position       [ #scope:path ] [ #data '/' ]
-            #set            [ #data seperator ] [ #last:-1 ]
+            #modify         [ #data #scope:seperator ] [ #last:-1 ]
 
             @ get the filename
             #add            [ #scope:seperator ] [ #data 1 ]
             #slice          [ #scope:path ] [ #last ] [ #data -1 ]
-            #set            [ #data filename ] [ #last ]
+            #modify         [ #data #scope:filename ] [ #last ]
 
             @ get the directory
             #slice          [ #scope:path ] [ #data 1 ] [ #scope:seperator ]
-            #set            [ #data directory ] [ #last ]
+            #modify         [ #data #scope:directory ] [ #last ]
 
             @ return the file information
             #map            [ #data directory ] [ #scope:directory ] [ #data filename ] [ #scope:filename ]
@@ -33,7 +33,7 @@
 
             @ get file information
             #call           [ #function:#file:file_information ] [ #scope:path ]
-            #set            [ #data information ] [ #last ]
+            #modify         [ #data #scope:information ] [ #last ]
 
             @ create the directory and file if needed
             #string         [ #data "mkdir -p " ] [ #scope:directory ]
@@ -50,7 +50,7 @@
 
             @ get file information
             #call           [ #function:#file:file_information ] [ #scope:path ]
-            #set            [ #data information ] [ #last ]
+            #modify         [ #data #scope:information ] [ #last ]
 
             @ create the directory and file if needed
             #string         [ #data "mkdir -p " ] [ #scope:directory ]
@@ -67,7 +67,7 @@
 
             @ get file information
             #call           [ #function:#file:file_information ] [ #scope:path ]
-            #set            [ #data information ] [ #last ]
+            #modify         [ #data #scope:information ] [ #last ]
 
             @ create the directory and write to the file
             #string         [ #data "mkdir -p " ] [ #scope:directory ]
@@ -80,7 +80,7 @@
 
             @ get file information
             #call           [ #function:#file:file_information ] [ #scope:path ]
-            #set            [ #data information ] [ #last ]
+            #modify         [ #data #scope:information ] [ #last ]
 
             @ create the directory and write to the file
             #string         [ #data "mkdir -p " ] [ #scope:information:directory ]

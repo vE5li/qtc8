@@ -3,9 +3,9 @@
     @ move somewhere else
     timed_call [ [ #single name ] [ #single function ] [ #list parameters ]
         #time
-        #set            [ #data start_time ] [ #last ]
+        #modify         [ #data #scope:start_time ] [ #last ]
         #call_list      [ #scope:function ] [ #scope:parameters ]
-        #set            [ #data return ] [ #last ]
+        #modify         [ #data #scope:return ] [ #last ]
         #time
         #subtract       [ #last ] [ #scope:start_time ]
         #print_line     [ #data "[ timed ] " ] [ #scope:name ] [ #data " - " ] [ #last ] [ #data "ms" ]
@@ -81,7 +81,7 @@
 
     #expected_found [ [ #single expected [ list ] ] [ #single found ]
         #call           [ #function:#format:list ] [ #scope:expected ] [ #data ", " ] [ #root:#color:green ]
-        #set            [ #data list ] [ #last ]
+        #modify         [ #data #scope:list ] [ #last ]
         #call           [ #function:#format:debug ] [ #scope:found ]
         #string         [ #data "expected " ] [ #scope:list ] [ #data " -> found " ] [ #last ]
         #return         [ #last ]
@@ -95,7 +95,7 @@
 
     #expected_parameter_found [ [ #single index [ integer ] ] [ #single expected [ list ] ] [ #single found ]
         #call           [ #function:#format:list ] [ #scope:expected ] [ #data ", " ] [ #root:#color:green ]
-        #set            [ #data list ] [ #last ]
+        #modify         [ #data #scope:list ] [ #last ]
         #call           [ #function:#format:debug ] [ #scope:found ]
         #string         [ #data "parameter " ] [ #scope:index ] [ #data " expected " ] [ #scope:list ] [ #data " -> found " ] [ #last ]
         #return         [ #last ]

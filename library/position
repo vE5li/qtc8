@@ -5,9 +5,9 @@
         split [ [ #single positions ]
 
             @
-            #set            [ #data lookup ] [ #data { } ]
+            #modify         [ #data #scope:lookup ] [ #data { } ]
             #iterate        [ #scope:positions ]
-            #set            [ #data iterator ] [ #last:instance ]
+            #modify         [ #data #scope:iterator ] [ #last:instance ]
             #if             [ #data #equals ] [ #scope:iterator:file ] [ #data none ]
             #string         [ #scope:iterator:source ]
             #else           [ #data #always ]
@@ -15,13 +15,13 @@
             #end            [ #data #always ]
             #if             [ #data #present ] [ #scope:lookup ] [ #last ]
             #path           [ #data #scope:lookup ] [ #last ]
-            #set            [ #data path ] [ #last ]
+            #modify         [ #data #scope:path ] [ #last ]
             #resolve        [ #scope:path ]
             @ only if #not_contains !!!!!!!
             #append         [ #last ] [ #scope:iterator ]
             #modify         [ #scope:path ] [ #last ]
             #else           [ #data #always ]
-            #set            [ #data key ] [ #last ]
+            #modify         [ #data #scope:key ] [ #last ]
             #list           [ #scope:iterator ]
             #insert         [ #scope:lookup ] [ #scope:key ] [ #last ]
             #modify         [ #data #scope:lookup ] [ #last ]
@@ -38,7 +38,7 @@
         line_matches [ [ #single position ] [ #single value ]
 
             @
-            #set            [ #data smallest ] [ #data 3 ]
+            #modify         [ #data #scope:smallest ] [ #data 3 ]
             #iterate        [ #scope:position ]
             #subtract       [ #last:instance:line ] [ #scope:value ]
             #absolute       [ #last ]
@@ -46,7 +46,7 @@
             #return         [ #last ]
             #end            [ #data #always ]
             #if             [ #data #smaller ] [ #last ] [ #scope:smallest ]
-            #set            [ #data smallest ] [ #last ]
+            #modify         [ #data #scope:smallest ] [ #last ]
             #end            [ #data #always ]
             #end            [ #data #always ]
 
@@ -61,7 +61,7 @@
 
             @
             #iterate        [ #scope:position ]
-            #set            [ #data iterator ] [ #last:instance ]
+            #modify         [ #data #scope:iterator ] [ #last:instance ]
             #if             [ #data #equals ] [ #scope:iterator:line ] [ #scope:line ]
             #if             [ #data #not_smaller ] [ #scope:value ] [ #scope:iterator:character ]
             #subtract       [ #scope:value ] [ #scope:iterator:character ]
@@ -79,7 +79,7 @@
             @ split the positions into their respective files and iterate those
             #call           [ #function:#position:split ] [ #scope:positions ]
             #iterate        [ #last ]
-            #set            [ #data iterator ] [ #last:instance ]
+            #modify         [ #data #scope:iterator ] [ #last:instance ]
 
             @ print file header
             #if             [ #data #equals ] [ #scope:iterator:1:file ] [ #data none ]
@@ -91,12 +91,12 @@
             @ split the file into lines and iterate them
             #split          [ #scope:iterator:1:source ] [ #data '\n' ] [ #data !false ]
             #iterate        [ #last ]
-            #set            [ #data line ] [ #last ]
+            #modify         [ #data #scope:line ] [ #last ]
 
             @ check if line is supposed to be printed
             #call           [ #function:#position:line_matches ] [ #scope:iterator ] [ #scope:line:selector ]
             #if             [ #data #integer ] [ #last ]
-            #set            [ #data difference ] [ #last ]
+            #modify         [ #data #scope:difference ] [ #last ]
 
             @ print the line
             #fill           [ #scope:line:selector ] [ #data ' ' ] [ #data 4 ]
