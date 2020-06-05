@@ -54,7 +54,7 @@
             #if             [ #data #smaller ] [ #scope:smallest ] [ #data 2 ]
             #return         [ #scope:smallest ]
             #end            [ #data #always ]
-            #return         [ #data !false ]
+            #return         [ #data $false ]
         ]
 
         offset_matches [ [ #single position ] [ #single line ] [ #single value ]
@@ -66,12 +66,12 @@
             #if             [ #data #not_smaller ] [ #scope:value ] [ #scope:iterator:character ]
             #subtract       [ #scope:value ] [ #scope:iterator:character ]
             #if             [ #data #bigger ] [ #scope:iterator:length ] [ #last ]
-            #return         [ #data !true ]
+            #return         [ #data $true ]
             #end
             #end
             #end
             #end
-            #return         [ #data !false ]
+            #return         [ #data $false ]
         ]
 
         print [ [ #single color ] [ #single positions ]
@@ -89,7 +89,7 @@
             #end
 
             @ split the file into lines and iterate them
-            #split          [ #scope:iterator:1:source ] [ #data '\n' ] [ #data !false ]
+            #split          [ #scope:iterator:1:source ] [ #data '\n' ] [ #data $false ]
             #iterate        [ #last ]
             #modify         [ #data #scope:line ] [ #last ]
 
