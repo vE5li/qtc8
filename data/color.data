@@ -1,0 +1,1 @@
+#color { black "\e[30m" blue "\e[34m" cyan "\e[36m" green "\e[32m" magenta "\e[35m" none "\e[0m" red "\e[31m" white "\e[37m" yellow "\e[33m" } 

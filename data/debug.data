@@ -1,4 +1,4 @@
-#function {
+#functions {
 
     @ move somewhere else
     timed_call [ [ #single name ] [ #single function ] [ #list parameters ]
@@ -16,7 +16,7 @@
     #print {
 
         color [ [ #single color ] [ #single sender ] [ #list message ]
-            #call           [ #function:#format:tag ] [ #scope:color ] [ #scope:sender ]
+            #call           [ #data #format:tag ] [ #scope:color ] [ #scope:sender ]
             #list           [ #last ] [ #data " " ]
             #merge          [ #last ] [ #scope:message ]
             #invoke         [ #data #print_line ] [ #last ]
@@ -25,46 +25,47 @@
         debug [ [ #list message ]
             #list           [ #root:#color:magenta ] [ #data "debug" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:#print:color ] [ #last ]
+            #call_list      [ #data #print:color ] [ #last ]
         ]
 
         error [ [ #list message ]
             #list           [ #root:#color:red ] [ #data "error" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:#print:color ] [ #last ]
+            #call_list      [ #data #print:color ] [ #last ]
         ]
 
         warning [ [ #list message ]
             #list           [ #root:#color:yellow ] [ #data "warning" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:#print:color ] [ #last ]
+            #call_list      [ #data #print:color ] [ #last ]
         ]
 
         success [ [ #list message ]
             #list           [ #root:#color:green ] [ #data "success" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:#print:color ] [ #last ]
+            #call_list      [ #data #print:color ] [ #last ]
         ]
 
         module [ [ #list message ]
             #list           [ #root:#color:cyan ] [ #data "module" ]
             #merge          [ #last ] [ #scope:message ]
-            #call_list      [ #function:#print:color ] [ #last ]
+            #call_list      [ #data #print:color ] [ #last ]
         ]
     }
+    @@
 
     #tag [ [ #single tag ] [ #single message ]
 
         @ instruction tag
         #if             [ #data #keyword ] [ #scope:tag ]
         #serialize      [ #scope:tag ]
-        #call           [ #function:#format:tag ] [ #root:#color:red ] [ #last ]
+        #call           [ $#format:tag ] [ #root:#color:red ] [ #last ]
         #string         [ #last ] [ #data " " ] [ #scope:message ]
         #return         [ #last ]
 
         @ other tag
-        #else           [ #data #always ]
-        #end            [ #data #always ]
+        #else
+        #end
     ]
 
     #message [ [ #single message [ string ] ]
@@ -147,4 +148,6 @@
     #string_tokenizer [ [ #single message [ string ] ]
         #return         [ #scope:message ]
     ]
+
+    @@
 }

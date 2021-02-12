@@ -1,0 +1,123 @@
+#functions {
+
+    #position {
+
+        split [ [ #single positions ]
+
+            @
+            #modify         [ #data #scope:lookup ] [ #data { } ]
+            #iterate        [ #scope:positions ]
+            #modify         [ #data #scope:iterator ] [ #last:instance ]
+            #if             [ #data #equals ] [ #scope:iterator:file ] [ #data none ]
+            #string         [ #scope:iterator:source ]
+            #else           [ #data #always ]
+            #string         [ #scope:iterator:file ] [ #scope:iterator:source ]
+            #end            [ #data #always ]
+            #if             [ #data #present ] [ #scope:lookup ] [ #last ]
+            #path           [ #data #scope:lookup ] [ #last ]
+            #modify         [ #data #scope:path ] [ #last ]
+            #resolve        [ #scope:path ]
+            @ only if #not_contains !!!!!!!
+            #append         [ #last ] [ #scope:iterator ]
+            #modify         [ #scope:path ] [ #last ]
+            #else           [ #data #always ]
+            #modify         [ #data #scope:key ] [ #last ]
+            #list           [ #scope:iterator ]
+            #insert         [ #scope:lookup ] [ #scope:key ] [ #last ]
+            #modify         [ #data #scope:lookup ] [ #last ]
+            #end            [ #data #always ]
+            #end            [ #data #always ]
+
+            @ sort somewhere here-ish
+            @ remove the positions with 0 width
+
+            #values         [ #scope:lookup ]
+            #return         [ #last ]
+        ]
+
+        line_matches [ [ #single position ] [ #single value ]
+
+            @
+            #modify         [ #data #scope:smallest ] [ #data 3 ]
+            #iterate        [ #scope:position ]
+            #subtract       [ #last:instance:line ] [ #scope:value ]
+            #absolute       [ #last ]
+            #if             [ #data #zero ] [ #last ]
+            #return         [ #last ]
+            #end            [ #data #always ]
+            #if             [ #data #smaller ] [ #last ] [ #scope:smallest ]
+            #modify         [ #data #scope:smallest ] [ #last ]
+            #end            [ #data #always ]
+            #end            [ #data #always ]
+
+            @
+            #if             [ #data #smaller ] [ #scope:smallest ] [ #data 2 ]
+            #return         [ #scope:smallest ]
+            #end            [ #data #always ]
+            #return         [ #data $false ]
+        ]
+
+        offset_matches [ [ #single position ] [ #single line ] [ #single value ]
+
+            @
+            #iterate        [ #scope:position ]
+            #modify         [ #data #scope:iterator ] [ #last:instance ]
+            #if             [ #data #equals ] [ #scope:iterator:line ] [ #scope:line ]
+            #if             [ #data #not_smaller ] [ #scope:value ] [ #scope:iterator:character ]
+            #subtract       [ #scope:value ] [ #scope:iterator:character ]
+            #if             [ #data #bigger ] [ #scope:iterator:length ] [ #last ]
+            #return         [ #data $true ]
+            #end
+            #end
+            #end
+            #end
+            #return         [ #data $false ]
+        ]
+
+        print [ [ #single color ] [ #single positions ]
+
+            @ split the positions into their respective files and iterate those
+            #call           [ #function:#position:split ] [ #scope:positions ]
+            #iterate        [ #last ]
+            #modify         [ #data #scope:iterator ] [ #last:instance ]
+
+            @ print file header
+            #if             [ #data #equals ] [ #scope:iterator:1:file ] [ #data none ]
+            #print_line     [ #data "in string:"]
+            #else
+            #print_line     [ #data "in file " ] [ #root:#color:cyan ] [ #scope:iterator:1:file ] [ #root:#color:none ] [ #data ":"]
+            #end
+
+            @ split the file into lines and iterate them
+            #split          [ #scope:iterator:1:source ] [ #data '\n' ] [ #data $false ]
+            #iterate        [ #last ]
+            #modify         [ #data #scope:line ] [ #last ]
+
+            @ check if line is supposed to be printed
+            #call           [ #function:#position:line_matches ] [ #scope:iterator ] [ #scope:line:selector ]
+            #if             [ #data #integer ] [ #last ]
+            #modify         [ #data #scope:difference ] [ #last ]
+
+            @ print the line
+            #fill           [ #scope:line:selector ] [ #data ' ' ] [ #data 4 ]
+            #print_line     [ #data "[ " ] [ #root:#color:cyan ] [ #last ] [ #root:#color:none ] [ #data " ] " ] [ #scope:line:instance ]
+
+            @ underline
+            #if             [ #data #zero ] [ #scope:difference ]
+            #print          [ #data "[    + ] " ] [ #scope:color ]
+            #iterate        [ #scope:line:instance ]
+            #call           [ #function:#position:offset_matches ] [ #scope:iterator ] [ #scope:line:selector ] [ #last:selector ]
+            #if             [ #data #true ] [ #last ]
+            #print          [ #data '^' ]
+            #else
+            #print          [ #data ' ' ]
+            #end
+            #end
+            #print_line     [ #root:#color:none ]
+            #end
+            #end
+            #end
+            #end
+        ]
+    }
+}
