@@ -52,8 +52,39 @@
             #call_list      [ #data #print:color ] [ #last ]
         ]
     }
-    @@
 
+    #tokenizer function(message, position) {
+        @ print position
+        set error_tag := call($#format:tag, &root:#color:red, $"error")
+        print_line(error_tag ~ $" " ~ message)
+    }
+
+    #tag function(tag, message) {
+
+        if ?not_present(&root, $debug) {
+            return message
+        } else &root:debug != $!true {
+            return message
+        }
+
+        if ?keyword(tag) {
+            set tag := call($#format:tag, &root:#color:magenta, tag)
+        } else {
+            set tag := call($#format:tag, &root:#color:cyan, tag)
+        }
+        return tag ~ $" " ~ message
+    }
+
+    #message function(message) {
+        set tag := call($#format:tag, &root:#color:red, $"error")
+        return tag ~ $" " ~ message
+    }
+
+    #unregistered_character function(character) {
+        return $"unregistered character " ~ character
+    }
+
+    @@
     #tag [ [ #single tag ] [ #single message ]
 
         @ instruction tag
